@@ -75,9 +75,10 @@ class IBKRBot(EWrapper, EClient):
 
     def run_strategy(self):
         df = self.to_dataframe()
-        df = transform_data(df)
         df.to_csv("data/historical_data.csv")  # Save for use in another file
         print("Saved data to CSV.")
+        df = transform_data(df)
+        df.to_csv("data/historical_with_ema.csv")
 
 
 def run_once():
