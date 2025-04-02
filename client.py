@@ -44,7 +44,7 @@ class IBKRBot(EWrapper, EClient):
 
     def request_data(self) -> None:
         contract = Contract()
-        contract.symbol = "SPY"
+        contract.symbol = "SOFI"
         contract.secType = "STK"
         contract.exchange = "SMART"
         contract.currency = "USD"

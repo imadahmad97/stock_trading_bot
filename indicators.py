@@ -26,22 +26,32 @@ def percent_below_ema(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def buy_hold_or_sell(df: pd.DataFrame) -> pd.DataFrame:
-    in_position = False  # We're not in a trade at the start
+    in_position = False
+    entry_price = 0
     actions = []
+    profits = []
 
     for i, row in df.iterrows():
         if not in_position:
             if row["percent_below_ema"] < -0.3 and row["rsi"] < 30:
                 actions.append("buy")
+                entry_price = row["close"]
                 in_position = True
+                profits.append(0)
             else:
                 actions.append("hold")
+                profits.append(0)
         else:
-            if row["percent_below_ema"] > 0.3 and row["rsi"] > 70:
+            if row["percent_below_ema"] > 0.4 and row["rsi"] > 70:
                 actions.append("sell")
+                profit = row["close"] - entry_price
+                profits.append(profit)
                 in_position = False
+                entry_price = 0
             else:
                 actions.append("hold")
+                profits.append(0)
 
     df["action"] = actions
+    df["strategy_returns"] = profits
     return df
