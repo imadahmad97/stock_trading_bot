@@ -1,4 +1,5 @@
 import pandas as pd
+import config
 
 
 def calculate_ema(df: pd.DataFrame, span: int = 20):
@@ -33,7 +34,10 @@ def buy_hold_or_sell(df: pd.DataFrame) -> pd.DataFrame:
 
     for i, row in df.iterrows():
         if not in_position:
-            if row["percent_below_ema"] < -0.3 and row["rsi"] < 30:
+            if (
+                row["percent_below_ema"] < config.percent_below_ema_to_buy
+                and row["rsi"] < config.rsi_to_buy
+            ):
                 actions.append("buy")
                 entry_price = row["close"]
                 in_position = True
@@ -42,7 +46,10 @@ def buy_hold_or_sell(df: pd.DataFrame) -> pd.DataFrame:
                 actions.append("hold")
                 profits.append(0)
         else:
-            if row["percent_below_ema"] > 0.4 and row["rsi"] > 70:
+            if (
+                row["percent_below_ema"] > config.percent_below_ema_to_sell
+                and row["rsi"] > config.rsi_to_sell
+            ):
                 actions.append("sell")
                 profit = row["close"] - entry_price
                 profits.append(profit)

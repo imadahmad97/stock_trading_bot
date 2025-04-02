@@ -66,7 +66,6 @@ class IBKRBot(EWrapper, EClient):
         self.data.append(bar)
 
     def historicalDataEnd(self, reqId: int, start: str, end: str) -> None:
-        print(f"[{datetime.datetime.now()}] Got {len(self.data)} bars.")
         # Run your logic here
         self.run_strategy()
         self.disconnect()
@@ -91,7 +90,6 @@ def run_once() -> None:
 
 def wait_until_next_5_min() -> None:
     now = datetime.datetime.now()
-    # Wait until next 5-minute boundary
     mins_to_wait = 5 - (now.minute % 5)
     next_time = now.replace(second=0, microsecond=0) + datetime.timedelta(
         minutes=mins_to_wait
